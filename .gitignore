@@ -34,4 +34,6 @@ Thumbs.db
 # Screenshots (optional - uncomment if you want to ignore screenshots)
 # screenshots/
 
-data/
+data/csv
+data/transactions.csv
+data/transaction_differences.txt
