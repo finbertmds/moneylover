@@ -14,7 +14,7 @@ def get_category(merchant: str) -> str:
     """
     merchant_upper = merchant.upper()
 
-    if "CURSOR" in merchant_upper or "ﾀｲﾑｽﾞｶ" in merchant:
+    if "CURSOR" in merchant_upper:
         return "Internet Bill"
     elif "ＩＩＪ" in merchant or "IIJ" in merchant_upper:
         return "Phone Bill"
@@ -25,6 +25,7 @@ def get_category(merchant: str) -> str:
         or "ETC" in merchant_upper
         or "Ｓｕｉｃａ" in merchant
         or "SUICA" in merchant_upper
+        or "ﾀｲﾑｽﾞｶ" in merchant
     ):
         return "Transportation"
     elif "楽天証券" in merchant:
