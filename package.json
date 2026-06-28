@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "wdio run wdio.conf.ts",
-    "test:spec": "wdio run wdio.conf.ts --spec",
+    "test:add": "wdio run wdio.conf.ts --spec test/specs/transactions.spec.ts",
+    "test:export": "wdio run wdio.conf.ts --spec test/specs/exportTransactions.spec.ts",
     "wdio": "wdio run wdio.conf.ts"
   },
   "keywords": [

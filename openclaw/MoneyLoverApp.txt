@@ -1,0 +1,15 @@
+Open app "Money Lover"
+Navigate to tab "Account"
+Tap on "Export to Google sheet" button
+In popup "Export to Google sheet", tap on "Wallet" selection to open "Select Wallet" popup
+In "Select Wallet" popup, tap on "楽天カード" selection
+Wait until back to popup "Export to Google sheet"
+In "Time range" selection, tap on "This month"
+In "Date" popup, tap on "Between", wait until "Custom" popup is displayed
+Tap on "Start date", click "Back" button to select 1st of previous month, and tap on it
+Tap on "End date", select current date and tap on it
+Tap on "Done" button
+Wait until back to popup "Export to Google sheet"
+Tap on "Export" button
+Wait until "Export successfully" popup is displayed
+Tap on "Open" button

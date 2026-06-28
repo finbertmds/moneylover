@@ -9,33 +9,64 @@ import csv
 import os
 from collections import defaultdict
 from datetime import datetime
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Tuple
 
 
-def parse_transactions_csv(filename: str) -> Dict[str, List[Tuple[str, float, int]]]:
+def _detect_delimiter(filename: str) -> str:
+    """Detect CSV delimiter by inspecting the file header."""
+    with open(filename, "r", encoding="utf-8-sig", newline="") as f:
+        sample = f.read(4096)
+
+    if not sample:
+        return ","
+
+    for delimiter in [",", "\t", ";"]:
+        if sample.count(delimiter) > 0:
+            return delimiter
+
+    return ","
+
+
+def parse_transactions_csv(filename: str) -> Dict[str, List[Tuple[str, float, str]]]:
     """
     Parse MoneyLoverTransactions.csv and group by month.
     Returns: {month_key: [(date_str, abs_amount, id)]}
     month_key format: "YYYY-MM"
     """
     transactions_by_month = defaultdict(list)
+    delimiter = _detect_delimiter(filename)
 
-    with open(filename, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f, delimiter="\t")
+    with open(filename, "r", encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f, delimiter=delimiter)
         for row in reader:
             try:
-                # Parse date: DD/MM/YYYY
-                date_str = row["Date"].strip()
-                date_obj = datetime.strptime(date_str, "%d/%m/%Y")
+                date_str = (row.get("Date") or row.get("date") or "").strip()
+                if not date_str:
+                    continue
+
+                # Parse date: DD/MM/YYYY or YYYY-MM-DD (handle both formats)
+                if "/" in date_str:
+                    date_obj = datetime.strptime(date_str, "%d/%m/%Y")
+                else:
+                    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
                 month_key = date_obj.strftime("%Y-%m")
 
                 # Parse amount (negative for expenses)
-                amount = float(row["Amount"].strip())
+                amount_str = (row.get("Amount") or row.get("amount") or "").strip()
+                amount = float(amount_str)
                 abs_amount = abs(amount)
 
                 # Only process expenses (negative amounts) - skip incoming transfers
                 if amount < 0:
-                    transaction_id = row["Id"].strip()
+                    # Get transaction ID in column "Id" or "No."
+                    transaction_id = (
+                        row.get("Id")
+                        or row.get("No.")
+                        or row.get("No")
+                        or row.get("id")
+                        or ""
+                    )
+                    transaction_id = str(transaction_id or "").strip()
                     transactions_by_month[month_key].append(
                         (date_obj.strftime("%Y-%m-%d"), abs_amount, transaction_id)
                     )
@@ -347,10 +378,6 @@ def main(
                         f"Date: {date}, Amount: {amount:.2f} JPY, Enavi Row: {row_idx}\n"
                     )
 
-        print(
-            f"\n📄 Detailed differences written to: data/csv/transaction_differences.txt"
-        )
-
     # Write detailed differences to file
     if all_missing_in_enavi or all_missing_in_transactions:
         with open(output_file, "w", encoding="utf-8") as f:
@@ -375,8 +402,9 @@ def main(
 
 
 if __name__ == "__main__":
-    input_folder = "csv"
-    input_ml_file = "csv/MoneyLoverTransactions.csv"
-    output_file = "transaction_differences.txt"
-    output_full_file = "csv/transaction_differences_full.txt"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    input_folder = os.path.join(script_dir, "csv")
+    input_ml_file = os.path.join(input_folder, "MoneyLoverTransactions.csv")
+    output_file = os.path.join(script_dir, "transaction_differences.txt")
+    output_full_file = os.path.join(input_folder, "transaction_differences_full.txt")
     main(input_folder, input_ml_file, output_file, output_full_file)

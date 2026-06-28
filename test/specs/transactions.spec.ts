@@ -7,7 +7,7 @@ import { MainPage } from '../pages/MainPage';
 /**
  * Test suite for automating transaction entry in Money Lover app
  */
-describe('Money Lover Transaction Automation', () => {
+describe('Money Lover Add Transaction', () => {
     let mainPage: MainPage;
     let transactions: Transaction[];
     let logFile: fs.WriteStream;
