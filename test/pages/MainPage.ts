@@ -22,6 +22,14 @@ export class MainPage {
         return $('id=com.bookmark.money:id/tabAccount');
     }
 
+    private get tabHomeButton() {
+        return $('id=com.bookmark.money:id/tabHome');
+    }
+
+    private get tabTransactionButton() {
+        return $('id=com.bookmark.money:id/tabTransactions');
+    }
+
     private get incomeTab() {
         return $('//android.widget.TextView[contains(@text, "Income")]');
     }
@@ -109,6 +117,11 @@ export class MainPage {
 
     private get saveButton() {
         return $('id=com.bookmark.money:id/btn_save');
+    }
+
+    async navigateToHomeTab(): Promise<void> {
+        await this.tabHomeButton.click();
+        await browser.pause(1000);
     }
     
     /**

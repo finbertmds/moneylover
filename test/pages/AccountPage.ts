@@ -12,6 +12,14 @@ export class AccountPage {
         return $('id=com.bookmark.money:id/tabAccount');
     }
 
+    private get tabHomeButton() {
+        return $('id=com.bookmark.money:id/tabHome');
+    }
+
+    private get tabTransactionButton() {
+        return $('id=com.bookmark.money:id/tabTransactions');
+    }
+
     private get toolsButton() {
         return $('//android.widget.TextView[contains(@text, "Tools")]');
     }
@@ -135,6 +143,9 @@ export class AccountPage {
         await this.exportAlertCloseButton.click();
 
         await this.navigateBack();
+
+        await this.tabHomeButton.click();
+        await browser.pause(1000);
     }
     
     /**

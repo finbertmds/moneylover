@@ -90,6 +90,7 @@ describe('Money Lover Add Transaction', () => {
 
                 // Step 1: Tap "Add Transaction" button
                 writeLog('   Step 1: Opening Add Transaction screen...');
+                await mainPage.navigateToHomeTab();
                 await mainPage.addTransaction(transaction);
 
                 successCount++;
