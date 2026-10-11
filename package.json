@@ -4,10 +4,10 @@
   "description": "WebdriverIO + Appium automation for Money Lover Android app",
   "main": "index.js",
   "scripts": {
-    "install": "adb install-multiple apk/MoneyLover/config.arm64_v8a.apk apk/MoneyLover/com.bookmark.money.apk",
+    "install:moneylover": "adb install-multiple apk/MoneyLover/com.bookmark.money.apk apk/MoneyLover/config.arm64_v8a.apk apk/MoneyLover/config.xxhdpi.apk",
     "test": "wdio run wdio.conf.ts",
-    "test:import": "wdio run wdio.conf.ts --spec test/specs/transactions.spec.ts",
     "test:export": "wdio run wdio.conf.ts --spec test/specs/exportTransactions.spec.ts",
+    "test:import": "wdio run wdio.conf.ts --spec test/specs/transactions.spec.ts",
     "test:update": "wdio run wdio.conf.ts --spec test/specs/updateTransactions.spec.ts",
     "wdio": "wdio run wdio.conf.ts"
   },

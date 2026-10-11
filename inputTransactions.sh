@@ -8,6 +8,9 @@ while [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" != "1" ]; do slee
 adb shell input keyevent 82 >/dev/null 2>&1 || true
 echo "Android is ready."
 
+adb shell monkey -p com.bookmark.money 1
+sleep 10
+
 # Run the test:export command to export transactions to google drive
 npm run test:export
 
